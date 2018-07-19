@@ -116,8 +116,12 @@ async function runaway(users,i) {
     console.log(i)
     let userError = await excute(users)
     if (userError.length > 0) {
-        console.log("fail")
-        return true
+        if (i > 10) {
+            return true
+        } else {
+            console.log("runaway")
+            runaway(userError,i+1)
+        }
     } else {
         console.log("success")
         return true
@@ -130,6 +134,10 @@ async function run() {
 }
 
 run()
+
+schedule.scheduleJob('* */2 * * *', function(){
+    run()
+});
 /*
 
 setInterval(() => {
